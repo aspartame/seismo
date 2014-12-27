@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet/less" type="text/css" href="css/styles.less" />
+	
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyD2WOsIpfCAV7w3qUNwpdLA5mqSACvIvu8"></script>
+	<script type="text/javascript" src="js/knockout.js"></script>
+	<script type="text/javascript" src="js/less-1.4.1.min.js"></script>
 	<script type="text/javascript" src="js/seismo.js"></script>
-	
-	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 	<div id="map-canvas"></div>
+	<!-- ko if: selectedQuake() -->
+	<div class="details-overlay" data-bind="with: selectedQuake()">
+		<div class="details-header">
+			<span class="magnitude-badge" data-bind="text: magnitude, style: { 'border-color': color }"></span>
+			<span class="title" data-bind="text: title"></span>
+		</div>
+	</div>
+	<!-- /ko -->
 </body>
 </html>
