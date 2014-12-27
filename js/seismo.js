@@ -38,6 +38,7 @@ var SeismoViewModel = function () {
 			google.maps.event.addListener(_map, 'click', function () {
 				if(_selectedQuake()) {
 					_selectedQuake().stopAnimation();
+					_selectedQuake(null);
 				}
 			});
 			
