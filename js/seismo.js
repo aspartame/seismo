@@ -99,9 +99,11 @@ var SeismoViewModel = function () {
 function QuakeViewModel(quakeModel, marker) {
 	var self = this;
 	
-	var _title = ko.observable(quakeModel.properties.place);
-	var _magnitude = ko.observable(quakeModel.properties.mag);
-	var _magnitudeType = ko.observable(quakeModel.properties.magnitudeType);
+	var _title = ko.observable(quakeModel.properties['place']);
+	var _magnitude = ko.observable(quakeModel.properties['mag']);
+	var _magnitudeType = ko.observable(quakeModel.properties['magnitudeType']);
+	var _significance = ko.observable(quakeModel.properties['sig'] || '0');
+	var _feltReports = ko.observable(quakeModel.properties['felt'] || 0);
 	
 	var _originalIcon = SEISMO.util.getMarkerIcon(_magnitude());
 	var _animationId;
@@ -133,6 +135,8 @@ function QuakeViewModel(quakeModel, marker) {
 	self.color = SEISMO.util.getColorForMagnitude(_magnitude());
 	self.startAnimation = startAnimation;
 	self.stopAnimation = stopAnimation;
+	self.significance = _significance;
+	self.feltReports = _feltReports;
 	self.formattedMagnitude = function () { return SEISMO.util.numberWithOneDecimalPoint(_magnitude()); };
 }
 
