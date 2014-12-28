@@ -2,6 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet/less" type="text/css" href="css/styles.less" />
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
 	
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyD2WOsIpfCAV7w3qUNwpdLA5mqSACvIvu8"></script>
@@ -14,7 +15,9 @@
 	<!-- ko if: selectedQuake() -->
 	<div class="details-overlay" data-bind="with: selectedQuake()">
 		<div class="details-header">
-			<span class="magnitude-badge" data-bind="text: magnitude, style: { 'border-color': color }"></span>
+			<div class="magnitude-badge" data-bind="style: { 'border-color': color }">
+				<span class="magnitude-badge--value" data-bind="text: formattedMagnitude()"></span>
+			</div>
 			<span class="title" data-bind="text: title"></span>
 		</div>
 	</div>

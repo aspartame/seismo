@@ -7,8 +7,16 @@ var USGSFeed = function () {
 		});
 	}
 	
+	this.getPastDayOver10 = function (callback) {
+		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/1.0/day', callback);
+	}
+	
 	this.getPastDayOver25 = function (callback) {
 		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/2.5/day', callback);
+	}
+	
+	this.getPastWeekOver10 = function (callback) {
+		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/1.0/week', callback);
 	}
 	
 	this.getPastWeekOver25 = function (callback) {
@@ -17,6 +25,10 @@ var USGSFeed = function () {
 	
 	this.getPastMonthOver45 = function (callback) {
 		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/4.5/month', callback);
+	}
+	
+	this.getPastMonthSignificant = function (callback) {
+		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/significant/month', callback);
 	}
 };
 
@@ -48,6 +60,7 @@ var SeismoViewModel = function () {
 	
 	function updateQuakes(quakes) {
 		for (var i = 0; i < quakes.length; i++) {
+			// quakes[i].properties.mag = (2.5 + i*0.1) % 9; // For testing colors and sizes
 			addQuake(quakes[i]);
 		}
 		
@@ -65,6 +78,8 @@ var SeismoViewModel = function () {
 		});
 		
 		google.maps.event.addListener(marker, 'click', function() {
+			console.log(quake);
+			
 			if (_selectedQuake()) {
 				_selectedQuake().stopAnimation();
 			}
@@ -86,6 +101,7 @@ function QuakeViewModel(quakeModel, marker) {
 	
 	var _title = ko.observable(quakeModel.properties.place);
 	var _magnitude = ko.observable(quakeModel.properties.mag);
+	var _magnitudeType = ko.observable(quakeModel.properties.magnitudeType);
 	
 	var _originalIcon = SEISMO.util.getMarkerIcon(_magnitude());
 	var _animationId;
@@ -100,29 +116,28 @@ function QuakeViewModel(quakeModel, marker) {
 		var animationIcon = SEISMO.util.getMarkerIcon(_magnitude());
 		var direction = 1;
 		
-	    _animationId = window.setInterval(function() {
+		_animationId = window.setInterval(function() {
 			if (animationIcon.scale > maxScale) {
 				direction = -1
-			} else if (animationIcon.scale < _originalIcon.scale) {
+			} else if (animationIcon.scale < (0.5 * _originalIcon.scale)) {
 				direction = 1;
 			}
 			
 			animationIcon.scale = animationIcon.scale + direction;
-	      	marker.setIcon(animationIcon);
-	  	}, 40);
+			marker.setIcon(animationIcon);
+		}, 30);
 	}
 	
 	self.title = _title;
-	self.magnitude = _magnitude;
+	self.magnitudeType = _magnitudeType;
 	self.color = SEISMO.util.getColorForMagnitude(_magnitude());
 	self.startAnimation = startAnimation;
 	self.stopAnimation = stopAnimation;
+	self.formattedMagnitude = function () { return SEISMO.util.numberWithOneDecimalPoint(_magnitude()); };
 }
 
 $(document).ready(function() {
 	window.eqfeed_callback = function (results) {
-		console.log(results);
-		
 		SEISMO.vm.updateQuakes(results.features);
 	};
 	
@@ -154,46 +169,78 @@ var SEISMO = (function () {
 }());
 
 SEISMO.util = SEISMO.util || {
+	_adjustColorLuminance: function(hex, lum) {
+		// validate hex string
+		hex = String(hex).replace(/[^0-9a-f]/gi, '');
+		if (hex.length < 6) {
+			hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+		}
+		lum = lum || 0;
+
+		// convert to decimal and change luminosity
+		var rgb = "#", c, i;
+		for (i = 0; i < 3; i++) {
+			c = parseInt(hex.substr(i*2,2), 16);
+			c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+			rgb += ("00"+c).substr(c.length);
+		}
+
+		return rgb;
+	},
+	
+	numberWithOneDecimalPoint: function(nbr) {
+		return (Math.round(nbr * 10) / 10).toFixed(1);
+	},
+	
+	getStrokeWeightForMagnitude: function(magnitude) {
+		if (magnitude < 5.5) { return 1.0; }
+		if (magnitude < 6.5) { return 2.0; }
+		if (magnitude < 7.5) { return 3.0; }
+		if (magnitude < 8.5) { return 4.0; }
+		
+		return 5.0;
+	},
+	
 	getMarkerIcon: function(magnitude) {
+		var color = SEISMO.util.getColorForMagnitude(magnitude);
+		var scale = Math.pow(magnitude, 2) - 3 * magnitude; // Some random algo to scale circles
+		scale = Math.max(scale, 4);
+		
 		return {
 			path: google.maps.SymbolPath.CIRCLE,
 			fillOpacity: 0.2,
-			fillColor: SEISMO.util.getColorForMagnitude(magnitude),
+			fillColor: color,
 			strokeOpacity: 1.0,
-			strokeColor: SEISMO.util.getColorForMagnitude(magnitude),
-			strokeWeight: 1.0, 
-			scale: Math.pow(magnitude, 1.8) - 0.8 * magnitude // Some random algo to scale circles
+			strokeColor: color,
+			strokeWeight: SEISMO.util.getStrokeWeightForMagnitude(magnitude), 
+			scale: scale
 		}; 
 	},
+	
 	getColorForMagnitude: function(magnitude) {
-		// @colorMag40: #00CCCC;
-		// @colorMag50: #00CC66;
-		// @colorMag55: #00CC00;
-		// @colorMag60: #66CC00;
-		// @colorMag65: #4C9900;
-		// @colorMag70: #CCCC00;
-		// @colorMag75: #CC6600;
-		// @colorMag80: #CC0000;
-		// @colorMag85: #990000;
-		// @colorMag90: #660000;
-		// @colorMag10: #330000;
+		var color;
 		
-		if (magnitude < 4.0) { return '#00CCCC'; }
-		if (magnitude < 5.0) { return '#00CC66'; }
-		if (magnitude < 5.5) { return '#00CC00'; }
-		if (magnitude < 6.0) { return '#66CC00'; }
-		if (magnitude < 6.5) { return '#4C9900'; }
-		if (magnitude < 7.0) { return '#BBBB00'; }
-		if (magnitude < 7.5) { return '#CC6600'; }
-		if (magnitude < 8.0) { return '#CC0000'; }
-		if (magnitude < 8.5) { return '#990000'; }
-		if (magnitude < 9.0) { return '#660000'; }
+		if (magnitude <= 3.0) { color = '#00ffff'; }
+		else if (magnitude <= 3.4) { color = '#00fdd8'; }
+		else if (magnitude <= 3.8) { color = '#00fbac'; }
+		else if (magnitude <= 4.2) { color = '#00fa82'; }
+		else if (magnitude <= 4.6) { color = '#00f954'; }
+		else if (magnitude <= 5.0) { color = '#00f92f'; }
+		else if (magnitude <= 5.3) { color = '#00f92b'; }
+		else if (magnitude <= 5.6) { color = '#15f928'; }
+		else if (magnitude <= 5.9) { color = '#ffec00'; }
+		else if (magnitude <= 6.2) { color = '#ffbf00'; }
+		else if (magnitude <= 6.5) { color = '#ff9300'; }
+		else if (magnitude <= 6.8) { color = '#ff6700'; }
+		else if (magnitude <= 7.1) { color = '#ff3200'; }
+		else if (magnitude <= 7.5) { color = '#ff0000'; }
+		else if (magnitude <= 8.0) { color = '#db0000'; }
+		else if (magnitude <= 8.5) { color = '#a40000'; }
+		else { color = '#480000'; }
 		
-		return '#330000';
+		return SEISMO.util._adjustColorLuminance(color, -0.1)
 	}
 }
-
-
 
 
 
