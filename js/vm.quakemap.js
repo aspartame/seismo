@@ -4,6 +4,8 @@ se.vm.QuakeMap = function () {
 	var _map;
 	var _quakes = ko.observableArray();
 	var _selectedQuake = ko.observable();
+	var _totalNbrOfQuakes = ko.observable();
+	var _isBusy = ko.observable(false);
 	
 	function load(onLoaded) {
 		google.maps.event.addDomListener(window, 'load', function () {
@@ -27,6 +29,8 @@ se.vm.QuakeMap = function () {
 	}
 	
 	function updateQuakes(quakes) {
+		_totalNbrOfQuakes(quakes.length);
+		
 		for (var i = 0; i < quakes.length; i++) {
 			// quakes[i].properties.mag = (2.5 + i*0.1) % 9; // For testing colors and sizes
 			addQuake(quakes[i]);
@@ -62,4 +66,27 @@ se.vm.QuakeMap = function () {
 	this.load = load;
 	this.updateQuakes = updateQuakes;
 	this.selectedQuake = _selectedQuake;
+	this.totalNbrOfQuakes = _totalNbrOfQuakes;
+	this.isBusy = _isBusy;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

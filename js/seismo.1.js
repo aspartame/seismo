@@ -6,10 +6,12 @@ se.util = se.util || {};
 $(document).ready(function() {
 	window.eqfeed_callback = function (results) {
 		se.quakeMap.updateQuakes(results.features);
+		se.quakeMap.isBusy(false);
 	};
 	
 	se.quakeMap = new se.vm.QuakeMap();
-		
+	se.quakeMap.isBusy(true);
+	
 	se.quakeMap.load(function () {
 		var feed = new se.m.USGSFeed();
 		feed.getPastMonthOver45();

@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet/less" type="text/css" href="css/styles.less" />
 	<link href="http://fonts.googleapis.com/css?family=Roboto:300,100" rel="stylesheet" type="text/css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyD2WOsIpfCAV7w3qUNwpdLA5mqSACvIvu8"></script>
@@ -15,32 +16,48 @@
 	<script type="text/javascript" src="js/util.js"></script>
 </head>
 <body>
-	<div id="map-canvas"></div>
-	<!-- ko if: selectedQuake() -->
-	<div class="details-overlay" data-bind="with: selectedQuake()">
-		<div class="details-header">
-			<div class="magnitude-badge" data-bind="style: { 'border-color': color }">
-				<span class="magnitude-badge--value" data-bind="text: formattedMagnitude()"></span>
-			</div>
-			<span class="title" data-bind="text: title"></span>
-		</div>
-		<div class="feature-grid">
-			<div class="column-1">
-				<span class="value" data-bind="text: formattedMagnitude()"></span>
-				<span class="label">magnitude</span>
-			</div>
-			<div class="column-2">
-				<span class="value">
-					<span data-bind="text: significance"></span><span class="significance-maxval">&nbsp;/&nbsp;1000</span>
-				</span>
-				<span class="label">significance</span>
-			</div>
-			<div class="column-3">
-				<span class="value" data-bind="text: feltReports"></span>
-				<span class="label">felt reports</span>
-			</div>
+	<div class="loading-container" data-bind="visible: isBusy">
+		<div class="spinner-container">
+			<div class="spinner"></div>
+			<div class="spinner-label">Loading maps and earthquakes and stuff...</div>
 		</div>
 	</div>
-	<!-- /ko -->
+	<div id="map-canvas"></div>
+	<div class="overlay" data-bind="visible: !isBusy()">
+		<div class="overlay--settings">
+			<div class="header">
+				<span class="globe-container">
+					<i class="fa fa-globe"></i>
+				</span>
+				<span>We counted<span class="earthquake-count" data-bind="text: totalNbrOfQuakes"></span>earthquakes with a magnitude of 4.5+ in the last 30 days.</span>
+			</div>
+		</div>
+		<!-- ko if: selectedQuake() -->
+		<div class="overlay--details" data-bind="with: selectedQuake()">
+			<div class="details-header">
+				<div class="magnitude-badge" data-bind="style: { 'border-color': color }">
+					<span class="magnitude-badge--value" data-bind="text: formattedMagnitude()"></span>
+				</div>
+				<span class="title" data-bind="text: title"></span>
+			</div>
+			<div class="feature-grid">
+				<div class="column-1">
+					<span class="value" data-bind="text: formattedMagnitude()"></span>
+					<span class="label">magnitude</span>
+				</div>
+				<div class="column-2">
+					<span class="value">
+						<span data-bind="text: significance"></span><span class="significance-maxval">&nbsp;/&nbsp;1000</span>
+					</span>
+					<span class="label">significance</span>
+				</div>
+				<div class="column-3">
+					<span class="value" data-bind="text: feltReports"></span>
+					<span class="label">felt reports</span>
+				</div>
+			</div>
+		</div>
+		<!-- /ko -->
+	</div>
 </body>
 </html>
