@@ -4,17 +4,17 @@ se.util.numberWithOneDecimalPoint = function(nbr) {
 
 se.util.getStrokeWeightForMagnitude = function(magnitude) {
 	if (magnitude < 5.5) { return 1.0; }
-	if (magnitude < 6.5) { return 2.0; }
-	if (magnitude < 7.5) { return 3.0; }
-	if (magnitude < 8.5) { return 4.0; }
+	if (magnitude < 6.5) { return 1.5; }
+	if (magnitude < 7.5) { return 2.0; }
+	if (magnitude < 8.5) { return 2.5; }
 		
 	return 5.0;
 };
 	
 se.util.getMarkerIcon = function(magnitude) {
 	var color = se.util.getColorForMagnitude(magnitude);
-	var scale = Math.pow(magnitude, 2) - 3 * magnitude; // Some random algo to scale circles
-	scale = Math.max(scale, 4);
+	var scale = Math.pow(magnitude, 1.8) - 2.5 * magnitude; // Some random algo to scale circles
+	scale = Math.max(scale, 3);
 		
 	return {
 		path: google.maps.SymbolPath.CIRCLE,

@@ -20,16 +20,22 @@ se.m.Quake = function(quakeModel, marker) {
 	function startAnimation() {
 		var maxScale = _originalIcon.scale * 2;
 		var animationIcon = se.util.getMarkerIcon(_magnitude());
-		var direction = 1;
+		
+		animationIcon.scale = 1;
+		animationIcon.strokeOpacity = 1;
 		
 		_animationId = window.setInterval(function() {
-			if (animationIcon.scale > maxScale) {
-				direction = -1
-			} else if (animationIcon.scale < (0.5 * _originalIcon.scale)) {
-				direction = 1;
+			if (animationIcon.scale < 30) {
+				animationIcon.scale += 1;
+				
+				animationIcon.strokeOpacity = animationIcon.strokeOpacity <= 0.02 ? 0 : animationIcon.strokeOpacity - 0.02;
+				animationIcon.fillOpacity = animationIcon.fillOpacity <= 0.003 ? 0 : animationIcon.fillOpacity - 0.003;
+			} else {
+				animationIcon.scale = 1;
+				animationIcon.strokeOpacity = _originalIcon.strokeOpacity;
+				animationIcon.fillOpacity = _originalIcon.fillOpacity;
 			}
 			
-			animationIcon.scale = animationIcon.scale + direction;
 			marker.setIcon(animationIcon);
 		}, 30);
 	}
