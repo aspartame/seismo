@@ -28,8 +28,8 @@ se.m.Quake = function(quakeModel, marker) {
 			if (animationIcon.scale < 30) {
 				animationIcon.scale += 1;
 				
-				animationIcon.strokeOpacity = animationIcon.strokeOpacity <= 0.02 ? 0 : animationIcon.strokeOpacity - 0.02;
-				animationIcon.fillOpacity = animationIcon.fillOpacity <= 0.003 ? 0 : animationIcon.fillOpacity - 0.003;
+				animationIcon.strokeOpacity = animationIcon.strokeOpacity <= 0.03 ? 0 : animationIcon.strokeOpacity - 0.03;
+				animationIcon.fillOpacity = animationIcon.fillOpacity <= 0.004 ? 0 : animationIcon.fillOpacity - 0.004;
 			} else {
 				animationIcon.scale = 1;
 				animationIcon.strokeOpacity = _originalIcon.strokeOpacity;
