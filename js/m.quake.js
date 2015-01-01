@@ -47,5 +47,35 @@ se.m.Quake = function(quakeModel, marker) {
 	self.stopAnimation = stopAnimation;
 	self.significance = _significance;
 	self.feltReports = _feltReports;
-	self.formattedMagnitude = function () { return se.util.numberWithOneDecimalPoint(_magnitude()); };
+	
+	self.magnitude = function () { 
+		return se.util.numberWithOneDecimalPoint(_magnitude()); 
+	};
+	
+	self.magnitudeScale = function () {
+		var scale = _magnitudeType();
+		return se.util.capitalize(scale);
+	};
+	
+	self.timeAgo = function () {
+		var timestamp = quakeModel.properties['time'];
+		return moment(parseInt(timestamp, 10)).fromNow();
+	};
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

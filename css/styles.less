@@ -25,7 +25,7 @@ body,
 	& > [class*='overlay--'] {
 		background-color: rgba(57, 66, 73, 0.85);
 		border-radius: 10px;
-		padding: 15px;
+		padding: 12px;
 	}
 }
 
@@ -63,21 +63,29 @@ body,
 }
 
 .details-header .magnitude-badge {
-	width: 50px;
-	height: 50px;
+	width: 56px;
+	height: 56px;
 	background-color: rgba(0,0,0,0.3);
-	line-height: 50px;
+	line-height: 56px;
 	text-align: center;
 	font-size: 24px;
 	float: left;
 	border: 3px solid #00ffff;
 	border-radius: 50%;
-	margin-right: 12px;
+	margin-right: 10px;
+}
+
+.details-header .time-ago {
+	display: block;
+	color: rgba(255,255,255,0.75);
+	font-size: 12px;
+	padding-top: 1px;
+	margin-bottom: -5px;
 }
 
 .details-header .title {
 	display: block;
-	line-height: 1.3;
+	line-height: 1.2;
 	font-size: 16px;
 	padding-top: 8px;
 }
@@ -98,7 +106,7 @@ body,
 			font-size: 20px;
 			color: rgba(255,255,255,0.9);
 		
-			.significance-maxval {
+			.value-suffix {
 				padding-left: 3px;
 				font-size: 12px;
 			}

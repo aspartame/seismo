@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyD2WOsIpfCAV7w3qUNwpdLA5mqSACvIvu8"></script>
 	<script type="text/javascript" src="js/vendor/knockout.js"></script>
 	<script type="text/javascript" src="js/vendor/less-1.4.1.min.js"></script>
+	<script type="text/javascript" src="js/vendor/moment.min.js"></script>
 	<script type="text/javascript" src="js/seismo.1.js"></script>
 	<script type="text/javascript" src="js/m.usgsfeed.js"></script>
 	<script type="text/javascript" src="js/vm.quakemap.js"></script>
@@ -34,18 +35,21 @@
 		<div class="overlay--details" data-bind="with: selectedQuake()">
 			<div class="details-header">
 				<div class="magnitude-badge" data-bind="style: { 'border-color': color }">
-					<span class="magnitude-badge--value" data-bind="text: formattedMagnitude()"></span>
+					<span class="magnitude-badge--value" data-bind="text: magnitude()"></span>
 				</div>
+				<span class="time-ago" data-bind="text: timeAgo()"></span>
 				<span class="title" data-bind="text: title"></span>
 			</div>
 			<div class="feature-grid">
 				<div class="column-1">
-					<span class="value" data-bind="text: formattedMagnitude()"></span>
+					<span class="value">
+						<span data-bind="text: magnitude()"></span><span class="value-suffix" data-bind="text: magnitudeScale()"></span>
+					</span>
 					<span class="label">magnitude</span>
 				</div>
 				<div class="column-2">
 					<span class="value">
-						<span data-bind="text: significance"></span><span class="significance-maxval">&nbsp;/&nbsp;1000</span>
+						<span data-bind="text: significance"></span><span class="value-suffix">&nbsp;/&nbsp;1000</span>
 					</span>
 					<span class="label">significance</span>
 				</div>

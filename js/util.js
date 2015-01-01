@@ -89,3 +89,28 @@ se.util.getColorForMagnitude = function(magnitude) {
 		
 	return adjustLuminance(color, 0)
 };
+
+se.util.capitalize = function (str) {
+	return str.length ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
