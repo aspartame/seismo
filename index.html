@@ -35,15 +35,15 @@
 		<div class="overlay--details" data-bind="with: selectedQuake()">
 			<div class="details-header">
 				<div class="magnitude-badge" data-bind="style: { 'border-color': color }">
-					<span class="magnitude-badge--value" data-bind="text: magnitude()"></span>
+					<span class="magnitude-badge--value" data-bind="text: magnitude"></span>
 				</div>
-				<span class="time-ago" data-bind="text: timeAgo()"></span>
+				<span class="time-ago" data-bind="text: getTimeAgo()"></span>
 				<span class="title" data-bind="text: title"></span>
 			</div>
 			<div class="feature-grid">
 				<div class="column-1">
 					<span class="value">
-						<span data-bind="text: magnitude()"></span><span class="value-suffix" data-bind="text: magnitudeScale()"></span>
+						<span data-bind="text: magnitude"></span><span class="value-suffix" data-bind="text: getMagnitudeScale()"></span>
 					</span>
 					<span class="label">magnitude</span>
 				</div>

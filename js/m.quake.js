@@ -3,13 +3,8 @@ se.m = se.m || {};
 se.m.Quake = function(quakeModel, marker) {
 	var self = this;
 	
-	var _title = ko.observable(quakeModel.properties['place']);
-	var _magnitude = ko.observable(quakeModel.properties['mag']);
-	var _magnitudeType = ko.observable(quakeModel.properties['magnitudeType']);
-	var _significance = ko.observable(quakeModel.properties['sig'] || '0');
-	var _feltReports = ko.observable(quakeModel.properties['felt'] || 0);
-	
-	var _originalIcon = se.util.getMarkerIcon(_magnitude());
+	var _magnitude = se.util.numberWithOneDecimalPoint(quakeModel.properties['mag']);
+	var _originalIcon = se.util.getMarkerIcon(_magnitude);
 	var _animationId;
 	
 	function stopAnimation() {
@@ -19,7 +14,7 @@ se.m.Quake = function(quakeModel, marker) {
 	
 	function startAnimation() {
 		var maxScale = _originalIcon.scale * 2;
-		var animationIcon = se.util.getMarkerIcon(_magnitude());
+		var animationIcon = se.util.getMarkerIcon(_magnitude);
 		
 		animationIcon.scale = 1;
 		animationIcon.strokeOpacity = 1;
@@ -40,24 +35,20 @@ se.m.Quake = function(quakeModel, marker) {
 		}, 30);
 	}
 	
-	self.title = _title;
-	self.magnitudeType = _magnitudeType;
-	self.color = se.util.getColorForMagnitude(_magnitude());
+	self.title = quakeModel.properties['place'] || '';
+	self.magnitudeType = quakeModel.properties['magnitudeType'] || '';
+	self.significance = quakeModel.properties['sig'] || '0';
+	self.feltReports = quakeModel.properties['felt'] || 0;
+	self.magnitude = _magnitude;
+	self.color = se.util.getColorForMagnitude(_magnitude);
 	self.startAnimation = startAnimation;
 	self.stopAnimation = stopAnimation;
-	self.significance = _significance;
-	self.feltReports = _feltReports;
 	
-	self.magnitude = function () { 
-		return se.util.numberWithOneDecimalPoint(_magnitude()); 
+	self.getMagnitudeScale = function () {
+		return se.util.capitalize(self.magnitudeType);
 	};
 	
-	self.magnitudeScale = function () {
-		var scale = _magnitudeType();
-		return se.util.capitalize(scale);
-	};
-	
-	self.timeAgo = function () {
+	self.getTimeAgo = function () {
 		var timestamp = quakeModel.properties['time'];
 		return moment(parseInt(timestamp, 10)).fromNow();
 	};
