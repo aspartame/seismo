@@ -8,11 +8,23 @@ se.vm.QuakeMap = function () {
 	var _isBusy = ko.observable(false);
 	
 	function load(onLoaded) {
+		// Adam Krogh
+		// http://atmist.com
+		var mapStyles = [{"featureType":"water","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]},
+		{"featureType":"landscape","stylers":[{"color":"#f2e5d4"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},
+		{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},
+		{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},
+		{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},
+		{"featureType":"administrative","stylers":[{"visibility":"on"},{"lightness":33}]},
+		{"featureType":"road"},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},
+		{},{"featureType":"road","stylers":[{"lightness":20}]}];
+		
 		google.maps.event.addDomListener(window, 'load', function () {
 			var mapOptions = {
 				mapTypeId: google.maps.MapTypeId.TERRAIN,
-				center: { lat: 30, lng: 0},
-				zoom: 3
+				center: { lat: 20, lng: 0},
+				zoom: 2,
+				styles: mapStyles
 			};
   	  	
 			_map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
