@@ -2,6 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet/less" type="text/css" href="css/styles.less" />
+	<link rel="stylesheet" type="text/css" href="css/csshake.min.css" />
 	<link href="http://fonts.googleapis.com/css?family=Roboto:300,100" rel="stylesheet" type="text/css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	
@@ -23,7 +24,7 @@
 			<div class="spinner-label">Loading maps and earthquakes and stuff...</div>
 		</div>
 	</div>
-	<div id="map-canvas"></div>
+	<div id="map-canvas" data-bind="css: { 'shake' : applyAnimation, 'shake-constant' : applyAnimation }"></div>
 	<div class="overlay" data-bind="visible: !isBusy()">
 		<div class="overlay--settings">
 			<div class="header">

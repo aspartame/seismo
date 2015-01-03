@@ -4,8 +4,9 @@ se.vm.QuakeMap = function () {
 	var _map;
 	var _quakes = ko.observableArray();
 	var _selectedQuake = ko.observable();
-	var _totalNbrOfQuakes = ko.observable();
+	var _totalNbrOfQuakes = ko.observable(0);
 	var _isBusy = ko.observable(false);
+	var _applyAnimation = ko.observable(false);
 	
 	function load(onLoaded) {
 		// Adam Krogh
@@ -22,7 +23,7 @@ se.vm.QuakeMap = function () {
 		google.maps.event.addDomListener(window, 'load', function () {
 			var mapOptions = {
 				mapTypeId: google.maps.MapTypeId.TERRAIN,
-				center: { lat: 20, lng: 0},
+				center: { lat: 0, lng: 0},
 				zoom: 2,
 				styles: mapStyles
 			};
@@ -40,13 +41,30 @@ se.vm.QuakeMap = function () {
 		});
 	}
 	
+	/* Kind of messy algo, done this way so animation when adding markers looks OK */
 	function updateQuakes(quakes) {
-		_totalNbrOfQuakes(quakes.length);
+		_applyAnimation(true);
 		
-		for (var i = 0; i < quakes.length; i++) {
-			// quakes[i].properties.mag = (2.5 + i*0.1) % 9; // For testing colors and sizes
-			addQuake(quakes[i]);
-		}
+		var i = 0;
+		var step = 27;
+		var interval = window.setInterval(function() {
+			if (i < (quakes.length - step)) {
+				var j = 0;
+				
+				while (j++ < step) {
+					addQuake(quakes[i++]);
+				}
+			} else if (i < quakes.length) {
+				while (i < quakes.length) {
+					addQuake(quakes[i++]);
+				}
+			} else {
+				window.clearInterval(interval);
+				_applyAnimation(false);
+			}
+			
+			_totalNbrOfQuakes(i);
+		}, 1);
 		
 		_quakes(quakes);
 	}
@@ -62,8 +80,6 @@ se.vm.QuakeMap = function () {
 		});
 		
 		google.maps.event.addListener(marker, 'click', function() {
-			console.log(quake);
-			
 			if (_selectedQuake()) {
 				_selectedQuake().stopAnimation();
 			}
@@ -80,6 +96,7 @@ se.vm.QuakeMap = function () {
 	this.selectedQuake = _selectedQuake;
 	this.totalNbrOfQuakes = _totalNbrOfQuakes;
 	this.isBusy = _isBusy;
+	this.applyAnimation = _applyAnimation;
 };
 
 
