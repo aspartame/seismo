@@ -45,27 +45,38 @@ se.vm.QuakeMap = function () {
 	function updateQuakes(quakes) {
 		_applyAnimation(true);
 		
-		var i = 0;
-		var step = 27;
-		var interval = window.setInterval(function() {
-			if (i < (quakes.length - step)) {
-				var j = 0;
-				
-				while (j++ < step) {
-					addQuake(quakes[i++]);
-				}
-			} else if (i < quakes.length) {
-				while (i < quakes.length) {
-					addQuake(quakes[i++]);
-				}
-			} else {
-				window.clearInterval(interval);
-				_applyAnimation(false);
-			}
-			
-			_totalNbrOfQuakes(i);
-		}, 1);
+		window.setTimeout(function() {
+			_applyAnimation(false);
+		}, 1500);
 		
+		var i = 0;
+
+		while (i < quakes.length) {
+			addQuake(quakes[i++]);
+		}
+		
+		// var i = 0;
+// 		var step = 27;
+// 		var interval = window.setInterval(function() {
+// 			if (i < (quakes.length - step)) {
+// 				var j = 0;
+//
+// 				while (j++ < step) {
+// 					addQuake(quakes[i++]);
+// 				}
+// 			} else if (i < quakes.length) {
+// 				while (i < quakes.length) {
+// 					addQuake(quakes[i++]);
+// 				}
+// 			} else {
+// 				window.clearInterval(interval);
+// 				_applyAnimation(false);
+// 			}
+//
+// 			_totalNbrOfQuakes(i);
+// 		}, 1);
+		
+		_totalNbrOfQuakes(quakes.length);
 		_quakes(quakes);
 	}
 	
