@@ -26,7 +26,7 @@ se.m.USGSFeed = function () {
 	}
 	
 	this.getPastMonthOver45 = function (callback) {
-		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/4.5/month', callback);
+		getFeed('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojsonp', callback);
 	}
 	
 	this.getPastMonthSignificant = function (callback) {
