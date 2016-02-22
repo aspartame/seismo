@@ -28,4 +28,4 @@ se.m.USGSFeed = function () {
 	// this.getPastMonthSignificant = function (callback) {
 // 		getFeed('http://earthquake.usgs.gov/earthquakes/feed/geojsonp/significant/month', callback);
 // 	}
-};
+}; 
