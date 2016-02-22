@@ -61,32 +61,12 @@ se.util.getColorForMagnitude = function(magnitude) {
 	
 	if (magnitude < 4.5) { color = '#00A8AB'; }
 	else if (magnitude < 5.3) { color = '#60A72C'; }
-	// else if (magnitude < 5.9) { color = '#C5E12A'; }
-	// else if (magnitude < 6.6) { color = '#F7F933'; }
 	else if (magnitude < 6.1) { color = '#F0B303'; }
 	else if (magnitude < 6.9) { color = '#F59105'; }
 	else if (magnitude < 7.7) { color = '#F54806'; }
 	else if (magnitude < 8.5) { color = '#F6220F'; }
 	else { color = '#9A223D'; }
 	
-	// if (magnitude <= 3.0) { color = '#00ffff'; }
-// 	else if (magnitude <= 3.4) { color = '#00fdd8'; }
-// 	else if (magnitude <= 3.8) { color = '#00fbac'; }
-// 	else if (magnitude <= 4.2) { color = '#00fa82'; }
-// 	else if (magnitude <= 4.6) { color = '#00f954'; }
-// 	else if (magnitude <= 5.0) { color = '#00f92f'; }
-// 	else if (magnitude <= 5.3) { color = '#00f92b'; }
-// 	else if (magnitude <= 5.6) { color = '#15f928'; }
-// 	else if (magnitude <= 5.9) { color = '#ffec00'; }
-// 	else if (magnitude <= 6.2) { color = '#ffbf00'; }
-// 	else if (magnitude <= 6.5) { color = '#ff9300'; }
-// 	else if (magnitude <= 6.8) { color = '#ff6700'; }
-// 	else if (magnitude <= 7.1) { color = '#ff3200'; }
-// 	else if (magnitude <= 7.5) { color = '#ff0000'; }
-// 	else if (magnitude <= 8.0) { color = '#db0000'; }
-// 	else if (magnitude <= 8.5) { color = '#a40000'; }
-// 	else { color = '#480000'; }
-		
 	return adjustLuminance(color, 0)
 };
 

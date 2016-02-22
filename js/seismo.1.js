@@ -4,7 +4,7 @@ se.vm = se.vm || {};
 se.util = se.util || {};
 
 $(document).ready(function() {
-	window.eqfeed_callback = function (results) {
+	function onResult(results) {
 		se.quakeMap.updateQuakes(results.features);
 		se.quakeMap.isBusy(false);
 	};
@@ -14,7 +14,7 @@ $(document).ready(function() {
 	
 	se.quakeMap.load(function () {
 		var feed = new se.m.USGSFeed();
-		feed.getPastMonthOver45();
+		feed.getPastMonthOver45(onResult);
 	});
 		
 	ko.applyBindings(se.quakeMap);
