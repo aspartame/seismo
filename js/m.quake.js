@@ -40,6 +40,8 @@ se.m.Quake = function(quakeModel, marker) {
 	self.significance = quakeModel.properties['sig'] || '0';
 	self.feltReports = quakeModel.properties['felt'] || 0;
 	self.magnitude = _magnitude;
+	self.tsunami = !! quakeModel.properties['tsunami'];
+	self.externalUrl = quakeModel.properties['url'];
 	self.color = se.util.getColorForMagnitude(_magnitude);
 	self.startAnimation = startAnimation;
 	self.stopAnimation = stopAnimation;
@@ -52,6 +54,10 @@ se.m.Quake = function(quakeModel, marker) {
 		var timestamp = quakeModel.properties['time'];
 		return moment(parseInt(timestamp, 10)).fromNow();
 	};
+	
+	// if (self.tsunami) {
+// 		console.log(quakeModel);
+// 	}
 }
 
 

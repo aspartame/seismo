@@ -59,6 +59,20 @@
 					<span class="label">felt reports</span>
 				</div>
 			</div>
+			<!-- ko if: tsunami -->
+			<div class="details-tsunamiWarning">
+				<span class="details-tsunamiWarning-inner">
+					<i class="tsunamiWarning-icon fa fa-bullhorn"></i>
+					<span>Tsunami warning issued!</span>
+				</span>
+			</div>
+			<!-- /ko -->
+			<!-- ko if: externalUrl -->
+			<div class="details-horizontalDivider"></div>
+			<div class="details-usgsLink">
+				<a href="#" target="_blank" class="usgsLink-link" data-bind="attr: { 'href': externalUrl }">Full details at USGS website<i class="usgsLink-icon fa fa-external-link"></i></a>
+			</div>
+			<!-- /ko -->
 		</div>
 		<!-- /ko -->
 	</div>
